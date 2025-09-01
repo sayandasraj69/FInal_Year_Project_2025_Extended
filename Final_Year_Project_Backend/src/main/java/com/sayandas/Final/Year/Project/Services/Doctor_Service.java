@@ -273,10 +273,16 @@ public class Doctor_Service {
         try {
             Users notifyUser = appointment.getUsers();
             if (notifyUser.getUserEmail() != null && !notifyUser.getUserEmail().isEmpty()) {
+                String emailBody = "Your appointment with Dr. " + doctor.getDocName() + " is confirmed.\n"
+                        + "Schedule: " + schedule.getWeekDay() + "\n"
+                        + "Timing: " + timing.getTimeRange() + "\n"
+                        + "City: " + (timing.getCity() != null ? timing.getCity().getCityName() : "N/A") + "\n"
+                        + "Center: " + (timing.getCenter() != null ? timing.getCenter().getCenName() : "N/A");
+
                 notificationService.sendEmail(
                         notifyUser.getUserEmail(),
                         "Appointment Confirmation",
-                        "Your appointment with Dr. " + doctor.getDocName() + " is confirmed."
+                        emailBody
                 );
             }
 //            notificationService.sendSms(
