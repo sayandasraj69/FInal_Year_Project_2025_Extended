@@ -74,6 +74,13 @@ public class Doctors {
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Appointments> appointments;
 
-
+    @Override
+    public String toString() {
+        return "Doctors{" +
+                "docId=" + docId +
+                ", docName='" + docName + '\'' +
+                // Do not include appointments or other nested objects
+                '}';
+    }
 
 }

@@ -26,4 +26,15 @@ public class Users {
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Appointments> appointments;
 
+    // src/main/java/com/sayandas/Final/Year/Project/Entities/Users.java
+    @Override
+    public String toString() {
+        return "Users{" +
+                "userId=" + userId +
+                ", userName='" + userName + '\'' +
+                ", userEmail='" + userEmail + '\'' +
+                ", userPhn='" + userPhn + '\'' +
+                '}';
+    }
+
 }

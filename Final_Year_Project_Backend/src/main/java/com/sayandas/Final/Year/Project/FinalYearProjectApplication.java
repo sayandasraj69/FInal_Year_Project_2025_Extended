@@ -29,11 +29,12 @@ public class FinalYearProjectApplication {
             );
             List<Specializations> specializations = List.of(
                     specRepository.findById(1).get(),
-                    specRepository.findById(2).get()
+                    specRepository.findById(8).get()
             );
-            City city = cityRepository.findById(1).get();
-            Centers center = centerRepository.findById(1).get();
-            Centers center1 = centerRepository.findById(2).get();
+            City city = cityRepository.findById(4).get();
+            City city1 = cityRepository.findById(5).get();
+            Centers center = centerRepository.findById(4).get();
+            Centers center1 = centerRepository.findById(5).get();
 
             List<Timings> timings = List.of(
                     Timings.builder()
@@ -45,26 +46,27 @@ public class FinalYearProjectApplication {
                     Timings.builder()
                             .timeRange("12:00 - 14:00")
                             .noOfPatients(20)
-                            .city(city)
+                            .city(city1)
                             .center(center1)
                             .build()
             );
 
-            City city1 = cityRepository.findById(2).get();
-            Centers center2 = centerRepository.findById(3).get();
+            City city2 = cityRepository.findById(6).get();
+            Centers center2 = centerRepository.findById(6).get();
+            Centers center3 = centerRepository.findById(7).get();
 
             List<Timings> timings1 = List.of(
                     Timings.builder()
                             .timeRange("12:00 - 14:00")
                             .noOfPatients(20)
-                            .city(city)
-                            .center(center1)
+                            .city(city2)
+                            .center(center2)
                             .build(),
                     Timings.builder()
                             .timeRange("17:00 - 20:00")
                             .noOfPatients(30)
-                            .city(city1)
-                            .center(center2)
+                            .city(city2)
+                            .center(center3)
                             .build()
             );
 
@@ -82,22 +84,22 @@ public class FinalYearProjectApplication {
                     );
 
             byte[] imageBytes = Files.readAllBytes(Paths.get(
-                    "C:\\Users\\Sayan Das\\Downloads\\prescripto_assets\\assets\\assets_frontend/doc1.png"));
+                    "C:\\Users\\Sayan Das\\Downloads\\prescripto_assets\\assets\\assets_frontend/doc3.png"));
 
             Doctors doctor = Doctors.builder()
-                    .docName("Sayan Das")
-                    .docImageName("doc1.png")
+                    .docName("Mousam Mangar")
+                    .docImageName("doc3.png")
                     .docImageType("image/*")
                     .docImageData(imageBytes)
-                    .docEmail("sayan@gmail.com")
-                    .docPhn("123456")
-                    .about("Dr. Sayan Das is a dedicated and compassionate physician with over 10 years of experience " +
-                            "in providing quality healthcare. Specializing in General Medicine and Neurology," +
-                            " Dr. Das is committed to patient-centered care, continuous learning, and staying updated " +
+                    .docEmail("mousam@gmail.com")
+                    .docPhn("12343567890")
+                    .about("Dr. Mousam Mangar is a dedicated and compassionate physician with over 5 years of experience " +
+                            "in providing quality healthcare. Specializing in General Medicine and Pediatrics," +
+                            " Dr. Haldar is committed to patient-centered care, continuous learning, and staying updated " +
                             "with the latest advancements in medical science. He believes in building strong doctor-patient" +
                             " relationships and delivering personalized treatment plans for every individual.")
-                    .experience(10)
-                    .fee(500)
+                    .experience(7)
+                    .fee(1000)
                     .qualifications(degrees)
                     .specializations(specializations)
                     .schedule(schedule)

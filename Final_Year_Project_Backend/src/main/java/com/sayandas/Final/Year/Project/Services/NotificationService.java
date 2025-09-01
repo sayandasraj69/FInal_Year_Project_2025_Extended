@@ -1,9 +1,8 @@
-package com.sayandas.Final.Year.Project.Services;
-
+package com.sayandas.Final.Year.Project.Services;// NotificationService.java
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Service;
 
 @Service
 public class NotificationService {
@@ -18,9 +17,5 @@ public class NotificationService {
         mailSender.send(message);
     }
 
-    // Dummy SMS sender (replace with real API integration)
-    public void sendSms(String phoneNumber, String message) {
-        // Integrate with SMS provider like Twilio here
-        System.out.println("Sending SMS to " + phoneNumber + ": " + message);
-    }
+    // Implement sendSms as needed
 }

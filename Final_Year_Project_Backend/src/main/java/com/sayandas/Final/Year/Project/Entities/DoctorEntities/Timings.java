@@ -35,4 +35,13 @@ public class Timings {
 
     @OneToMany(mappedBy = "timing", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Appointments> appointment;
+
+    @Override
+    public String toString() {
+        return "Timings{" +
+                "timingId=" + timingId +
+                ", timeRange='" + timeRange + '\'' +
+                // Do NOT include schedule or other entities here
+                '}';
+    }
 }

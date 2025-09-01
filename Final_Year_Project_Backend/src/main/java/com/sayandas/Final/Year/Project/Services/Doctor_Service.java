@@ -26,7 +26,8 @@ public class Doctor_Service {
     AppointmentsRepository appointmentsRepository;
     @Autowired
     UserRepository usersRepository;
-//    @Autowired
+
+    //    @Autowired
 //    SpecRepository specializationRepository;
 //    ObjectMapper objectMapper = new ObjectMapper();
     public Doctors addDoctor(Doctors doctor, MultipartFile image) throws IOException {
@@ -35,9 +36,11 @@ public class Doctor_Service {
         doctor.setDocImageData(image.getBytes());
         return doctorRepository.save(doctor);
     }
+
     public Doctors showDoctor(Integer id) {
         return doctorRepository.findById(id).get();
     }
+
     public List<Map<String, Object>> findMinorDetails() {
         List<Map<String, Object>> queryResult = doctorRepository.findMinorDetails();
 
@@ -70,6 +73,7 @@ public class Doctor_Service {
 
         return result;
     }
+
     public List<Map<String, Object>> getMinorDetailsBySpecName(String specName) {
         List<Map<String, Object>> queryResult = doctorRepository.findBySpecName(specName);
 
@@ -117,6 +121,7 @@ public class Doctor_Service {
     public List<Object> getAllSpecializationNames() {
         return specRepository.findAllSpecializations();
     }
+
     public List<Object> getAllQualificationNames() {
         return qualRepository.findAllQualifications();
     }
@@ -229,33 +234,60 @@ public class Doctor_Service {
 
     @Autowired
     private NotificationService notificationService;
+    @Autowired
+    TimingsRepository timingsRepository;
 
+    // Doctor_Service.java
     public Appointments bookAppointment(Appointments appointment) {
+        if (appointment.getDoctor() == null || appointment.getDoctor().getDocId() == null) {
+            throw new IllegalArgumentException("Doctor ID must not be null");
+        }
+        if (appointment.getSchedule() == null || appointment.getSchedule().getSchId() == null) {
+            throw new IllegalArgumentException("Schedule ID must not be null");
+        }
+        if (appointment.getTiming() == null || appointment.getTiming().getTimingId() == null) {
+            throw new IllegalArgumentException("Timing ID must not be null");
+        }
+
+        Doctors doctor = doctorRepository.findById(appointment.getDoctor().getDocId())
+                .orElseThrow(() -> new RuntimeException("Doctor not found"));
+        Schedule schedule = scheduleRepository.findById(appointment.getSchedule().getSchId())
+                .orElseThrow(() -> new RuntimeException("Schedule not found"));
+        Timings timing = timingsRepository.findById(appointment.getTiming().getTimingId())
+                .orElseThrow(() -> new RuntimeException("Timing not found"));
+
+        appointment.setDoctor(doctor);
+        appointment.setSchedule(schedule);
+        appointment.setTiming(timing);
+
+        // Always create a new user, do not check for existing
         Users user = appointment.getUsers();
         Users existingUser = usersRepository.findByUserPhn(user.getUserPhn());
-        if (existingUser == null) {
-            existingUser = usersRepository.save(user);
+        if (existingUser != null) {
+            appointment.setUsers(existingUser);
+        } else {
+            Users savedUser = usersRepository.save(user);
+            appointment.setUsers(savedUser);
         }
-        appointment.setUsers(existingUser);
-        Appointments saved = appointmentsRepository.save(appointment);
 
         try {
-            if (existingUser.getUserEmail() != null && !existingUser.getUserEmail().isEmpty()) {
+            Users notifyUser = appointment.getUsers();
+            if (notifyUser.getUserEmail() != null && !notifyUser.getUserEmail().isEmpty()) {
                 notificationService.sendEmail(
-                        existingUser.getUserEmail(),
+                        notifyUser.getUserEmail(),
                         "Appointment Confirmation",
-                        "Your appointment with Dr. " + appointment.getDoctor().getDocName() + " is confirmed."
+                        "Your appointment with Dr. " + doctor.getDocName() + " is confirmed."
                 );
             }
-            notificationService.sendSms(
-                    existingUser.getUserPhn(),
-                    "Your appointment with Dr. " + appointment.getDoctor().getDocName() + " is confirmed."
-            );
+//            notificationService.sendSms(
+//                    existingUser.getUserPhn(),
+//                    "Your appointment with Dr. " + appointment.getDoctor().getDocName() + " is confirmed."
+//            );
         } catch (Exception e) {
             System.err.println("Notification error: " + e.getMessage());
             // Do not throw, just log
         }
-
-        return saved;
+        return appointmentsRepository.save(appointment);
     }
 }
+

@@ -29,6 +29,15 @@ public class Schedule {
 
     @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Appointments> appointments;
+
+    @Override
+    public String toString() {
+        return "Schedule{" +
+                "schId=" + schId +
+                ", weekDay='" + weekDay + '\'' +
+                // Do NOT include timings or doctor here
+                '}';
+    }
 }
 
 // Schedule : [

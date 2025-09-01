@@ -4,10 +4,7 @@ import com.sayandas.Final.Year.Project.DTOs.DoctorDetailsDTO;
 import com.sayandas.Final.Year.Project.DTOs.ScheduleWithTimingsDTO;
 import com.sayandas.Final.Year.Project.Entities.DoctorEntities.Appointments;
 import com.sayandas.Final.Year.Project.Entities.DoctorEntities.Doctors;
-import com.sayandas.Final.Year.Project.Entities.DoctorEntities.Schedule;
-import com.sayandas.Final.Year.Project.Entities.DoctorEntities.Specializations;
 import com.sayandas.Final.Year.Project.Services.Doctor_Service;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = {"http://127.0.0.1:5500", "http://localhost:5500"}) // Allow requests from your frontend
+//@CrossOrigin(origins = {"http://127.0.0.1:5500", "http://localhost:5500"}) // Allow requests from your frontend
 @RestController
 @RequestMapping("/doctor")
 public class Doctor_Controller {
@@ -138,6 +135,7 @@ public class Doctor_Controller {
             Appointments savedAppointment = doctorService.bookAppointment(appointment);
             return new ResponseEntity<>(savedAppointment, HttpStatus.CREATED);
         } catch (Exception e) {
+            System.out.println(e);
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
